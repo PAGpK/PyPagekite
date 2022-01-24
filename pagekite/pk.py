@@ -3472,8 +3472,7 @@ class PageKite(object):
                                    bias=server_bias(server),
                                    wanted_by='config')
         pinged[ipaddrs[0]] = (pingtime, uuid)
-        if pingtime < 60:
-          servers_all[uuid] = server
+        servers_all[uuid] = server
         if pingtime < 0.250:
           servers_pref[uuid] = server
     threads, deadline = [], time.time() + 5
@@ -4093,6 +4092,9 @@ class PageKite(object):
       epoll.close()
 
   def Start(self, howtoquit='CTRL+C = Stop'):
+    if self.logfile:
+      self.LogTo(self.logfile)
+    logging.LogWarning('test')
     conns = self.conns = self.conns or Connections(self)
 
     # If we are going to spam stdout with ugly crap, then there is no point
