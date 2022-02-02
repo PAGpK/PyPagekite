@@ -4094,7 +4094,10 @@ class PageKite(object):
       epoll.close()
 
   def Start(self, howtoquit='CTRL+C = Stop'):
+<<<<<<< HEAD
     # Configure logging
+=======
+>>>>>>> upstream/main
     if self.logfile:
       self.LogTo(self.logfile)
     logging.LogWarning('test')
