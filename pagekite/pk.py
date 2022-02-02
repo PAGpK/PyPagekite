@@ -2503,7 +2503,9 @@ class PageKite(object):
       elif opt == '--fe_nocertcheck':
         self.fe_nocertcheck = True
       elif opt == '--service_xmlrpc': self.service_xmlrpc = arg
-      elif opt == '--frontend': self.servers_manual.append(arg)
+      elif opt == '--frontend':
+        self.servers_manual.append(arg)
+        self.server_ports = [arg.split(':')[-1]]
       elif opt == '--nofrontend': self.servers_never.append(arg)
       elif opt == '--frontends':
         count, domain, port = arg.split(':')
@@ -3472,8 +3474,7 @@ class PageKite(object):
                                    bias=server_bias(server),
                                    wanted_by='config')
         pinged[ipaddrs[0]] = (pingtime, uuid)
-        if pingtime < 60:
-          servers_all[uuid] = server
+        servers_all[uuid] = server
         if pingtime < 0.250:
           servers_pref[uuid] = server
     threads, deadline = [], time.time() + 5
@@ -4093,6 +4094,10 @@ class PageKite(object):
       epoll.close()
 
   def Start(self, howtoquit='CTRL+C = Stop'):
+    # Configure logging
+    if self.logfile:
+      self.LogTo(self.logfile)
+    logging.LogWarning('test')
     conns = self.conns = self.conns or Connections(self)
 
     # If we are going to spam stdout with ugly crap, then there is no point
